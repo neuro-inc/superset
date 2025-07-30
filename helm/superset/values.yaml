@@ -823,6 +823,9 @@ postgresql:
 
   ## PostgreSQL Primary parameters
   primary:
+    resources: {}
+    affinity: {}
+    tolerations: []
     ##
     ## Persistent Volume Storage configuration.
     ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes
@@ -873,6 +876,9 @@ redis:
   ## Master configuration
   ##
   master:
+    resources: { }
+    affinity: { }
+    tolerations: [ ]
     ##
     ## Image configuration
     # image:
