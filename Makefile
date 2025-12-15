@@ -15,6 +15,10 @@
 # limitations under the License.
 #
 
+HOOK_IMAGE_NAME ?= mlops-app-superset
+HOOK_IMAGE_TAG ?= latest
+
+
 # Python version installed; we need 3.10-3.11
 PYTHON=`command -v python3.11 || command -v python3.10`
 
@@ -112,3 +116,51 @@ report-celery-beat:
 
 admin-user:
 	superset fab create-admin
+
+## -------------------- apolo hooks
+
+.PHONY: hook-install
+hook-install:
+	cd hooks && \
+	poetry config virtualenvs.in-project true && \
+	poetry install --with dev && \
+	poetry run pre-commit install;
+
+.PHONY: hook-format
+format:
+ifdef CI
+	poetry run pre-commit run --all-files --show-diff-on-failure
+else
+	# automatically fix the formatting issues and rerun again
+	poetry run pre-commit run --all-files || poetry run pre-commit run --all-files
+endif
+
+.PHONY: hook-lint
+lint: hook-format
+	cd hooks && \
+	poetry run mypy ../.apolo
+
+
+.PHONY: test-unit
+test-unit:
+	cd hooks && \
+	poetry run pytest -vvs -c pyproject.toml --cov=../.apolo --cov-report xml:.coverage.unit.xml ../.apolo/tests/unit
+
+
+.PHONY: build-hook-image
+build-hook-image:
+	docker build \
+		--build-arg APP_IMAGE_TAG=$(HOOK_IMAGE_TAG) \
+		-t $(HOOK_IMAGE_NAME):latest \
+		-f hooks/hooks.Dockerfile \
+		.;
+
+.PHONY: push-hook-image
+push-hook-image:
+	docker tag $(HOOK_IMAGE_NAME):latest ghcr.io/neuro-inc/$(HOOK_IMAGE_NAME):$(HOOK_IMAGE_TAG)
+	docker push ghcr.io/neuro-inc/$(HOOK_IMAGE_NAME):$(HOOK_IMAGE_TAG)
+
+.PHONY: gen-types-schemas
+gen-types-schemas:
+	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetInputs .apolo/src/apolo_apps_superset/schemas/SupersetInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetOutputs .apolo/src/apolo_apps_superset/schemas/SupersetOutputs.json

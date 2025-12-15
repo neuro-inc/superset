@@ -70,7 +70,7 @@ On helm this can be set on `extraSecretEnv.SUPERSET_SECRET_KEY` or `configOverri
 | extraEnv | object | `{}` | Extra environment variables that will be passed into pods |
 | extraEnvRaw | list | `[]` | Extra environment variables in RAW format that will be passed into pods |
 | extraLabels | object | `{}` | Labels to be added to all resources |
-| extraSecretEnv | object | `{}` | Extra environment variables to pass as secrets |
+| extraSecretEnv | string | `nil` | Extra environment variables to pass as secrets |
 | extraSecrets | object | `{}` | Extra files to be mounted as Secrets on the path specified in `configMountPath` |
 | extraVolumeMounts | list | `[]` |  |
 | extraVolumes | list | `[]` |  |
@@ -250,6 +250,7 @@ On helm this can be set on `extraSecretEnv.SUPERSET_SECRET_KEY` or `configOverri
 | supersetNode.startupProbe.successThreshold | int | `1` |  |
 | supersetNode.startupProbe.timeoutSeconds | int | `1` |  |
 | supersetNode.strategy | object | `{}` |  |
+| supersetNode.tolerations | list | `[]` |  |
 | supersetNode.topologySpreadConstraints | list | `[]` | TopologySpreadConstrains to be added to supersetNode deployments |
 | supersetWebsockets.affinity | object | `{}` | Affinity to be added to supersetWebsockets deployment |
 | supersetWebsockets.command | list | `[]` |  |
@@ -333,6 +334,7 @@ On helm this can be set on `extraSecretEnv.SUPERSET_SECRET_KEY` or `configOverri
 | supersetWorker.resources | object | `{}` | Resource settings for the supersetWorker pods - these settings overwrite might existing values from the global resources object defined above. |
 | supersetWorker.startupProbe | object | `{}` | No startup/readiness probes by default since we don't really care about its startup time (it doesn't serve traffic) |
 | supersetWorker.strategy | object | `{}` |  |
+| supersetWorker.tolerations | list | `[]` |  |
 | supersetWorker.topologySpreadConstraints | list | `[]` | TopologySpreadConstrains to be added to supersetWorker deployments |
 | tolerations | list | `[]` |  |
 | topologySpreadConstraints | list | `[]` | TopologySpreadConstrains to be added to all deployments |

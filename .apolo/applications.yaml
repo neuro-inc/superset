@@ -1,0 +1,33 @@
+- app_type: superset
+  name: superset
+  title: Apache Superset
+  install_type: workflow
+  helm_path: helm/superset
+  git_url: https://github.com/neuro-inc/superset
+  app_package_name: apolo_apps_superset
+  inputs:
+    schema_path: .apolo/src/apolo_apps_superset/schemas/SupersetInputs.json
+    types_name: SupersetInputs
+    processor: SupersetInputsProcessor
+    image: ghcr.io/neuro-inc/mlops-app-superset
+  outputs:
+    schema_path: .apolo/src/apolo_apps_superset/schemas/SupersetOutputs.json
+    types_name: SupersetOutputs
+    processor: SupersetOutputsProcessor
+    image: ghcr.io/neuro-inc/mlops-app-superset
+  short_description: A modern, enterprise-ready business intelligence web application.
+  description: |
+    Superset is a modern data exploration and data visualization platform. Superset can replace or augment proprietary business intelligence tools for many teams. Superset integrates well with a variety of data sources.
+  pub_date: "2025-05-30T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/superset.svg
+  tags: ["Apache", "Superset", "BI", "Visualization", "Business Intelligence", "Data"]
+  urls:
+    - name: Superset Repository
+      type: documentation
+      url: https://github.com/apache/superset
+    - name: Superset Documentation
+      type: documentation
+      url: https://superset.apache.org/docs/intro/
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/superset-banner.svg

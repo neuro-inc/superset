@@ -3,6 +3,7 @@ name: "Helm: lint and test charts"
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
+    branches-ignore: [apolo]
     paths:
       - "helm/**"
 
