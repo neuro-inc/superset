@@ -11,10 +11,6 @@ repos:
         exclude: ^charts/
       - id: end-of-file-fixer
       - id: trailing-whitespace
-  - repo: https://github.com/mrtazz/checkmake.git
-    rev: 0.2.2
-    hooks:
-      - id: checkmake
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.30
     hooks:

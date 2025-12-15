@@ -117,6 +117,30 @@ report-celery-beat:
 admin-user:
 	superset fab create-admin
 
+## -------------------- apolo hooks
+
+.PHONY: hook-install
+hook-install:
+	cd hooks && \
+	poetry config virtualenvs.in-project true && \
+	poetry install --with dev && \
+	poetry run pre-commit install;
+
+.PHONY: hook-format
+format:
+ifdef CI
+	poetry run pre-commit run --all-files --show-diff-on-failure
+else
+	# automatically fix the formatting issues and rerun again
+	poetry run pre-commit run --all-files || poetry run pre-commit run --all-files
+endif
+
+.PHONY: hook-lint
+lint: hook-format
+	cd hooks && \
+	poetry run mypy ../.apolo
+
+
 .PHONY: test-unit
 test-unit:
 	cd hooks && \
@@ -140,4 +164,3 @@ push-hook-image:
 gen-types-schemas:
 	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetAppInputs .apolo/src/apolo_apps_superset/schemas/SupersetInputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetAppOutputs .apolo/src/apolo_apps_superset/schemas/SupersetOutputs.json
-
