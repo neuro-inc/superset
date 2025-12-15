@@ -9,11 +9,9 @@ from apolo_apps_superset.types import (
     SupersetOutputs,
 )
 
-
 __all__ = [
     "SupersetInputsProcessor",
     "SupersetOutputProcessor",
     "SupersetInputs",
     "SupersetOutputs",
 ]
-

@@ -1,11 +1,12 @@
 import typing as t
-from apolo_app_types.outputs.base import BaseAppOutputsProcessor
 
 from apolo_app_types.clients.kube import get_service_host_port
+from apolo_app_types.outputs.base import BaseAppOutputsProcessor
 from apolo_app_types.outputs.common import INSTANCE_LABEL
 from apolo_app_types.outputs.utils.ingress import get_ingress_host_port
 from apolo_app_types.protocols.common import ServiceAPI
 from apolo_app_types.protocols.common.networking import WebApp
+
 from apolo_apps_superset.types import SupersetOutputs, SupersetUserConfig
 
 
@@ -50,13 +51,11 @@ async def get_superset_outputs(
         ),
     )
 
-class SupersetOutputProcessor(
-    BaseAppOutputsProcessor[SupersetOutputs]
-):
+
+class SupersetOutputProcessor(BaseAppOutputsProcessor[SupersetOutputs]):
     async def _generate_outputs(
         self,
         helm_values: dict[str, t.Any],
         app_instance_id: str,
     ) -> SupersetOutputs:
         return await get_superset_outputs(helm_values, app_instance_id)
-

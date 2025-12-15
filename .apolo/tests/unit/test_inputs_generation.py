@@ -1,12 +1,11 @@
 import pytest
+from apolo_app_types.protocols.common import ApoloSecret, IngressHttp, Preset
 from apolo_app_types_fixtures.constants import (
     APP_ID,
     APP_SECRETS_NAME,
     DEFAULT_NAMESPACE,
     DEFAULT_POSTGRES_CREDS,
 )
-
-from apolo_app_types.protocols.common import ApoloSecret, IngressHttp, Preset
 from apolo_apps_superset.types import (
     SupersetInputs,
     SupersetPostgresConfig,
@@ -318,4 +317,3 @@ async def test_superset_values_generation_with_custom_admin_user(
         "password": "MyCrazyPass",
         "username": "some_other_admin_user",
     }
-

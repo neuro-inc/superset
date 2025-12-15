@@ -1,5 +1,3 @@
-from pydantic import ConfigDict, Field
-
 from apolo_app_types import CrunchyPostgresUserCredentials
 from apolo_app_types.protocols.common import (
     AbstractAppFieldType,
@@ -9,6 +7,7 @@ from apolo_app_types.protocols.common import (
     Preset,
     SchemaExtraMetadata,
 )
+from pydantic import ConfigDict, Field
 
 
 class WebConfig(AbstractAppFieldType):
@@ -119,4 +118,3 @@ class SupersetOutputs(AppOutputs):
         ).as_json_schema_extra(),
     )
     admin_user: SupersetUserConfig | None = None
-

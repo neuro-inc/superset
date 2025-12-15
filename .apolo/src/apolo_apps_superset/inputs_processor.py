@@ -6,11 +6,11 @@ from apolo_app_types.app_types import AppType
 from apolo_app_types.helm.apps.base import BaseChartValueProcessor
 from apolo_app_types.helm.apps.common import gen_extra_values
 from apolo_app_types.helm.utils.deep_merging import merge_list_of_dicts
+
 from apolo_apps_superset.types import (
     SupersetInputs,
     SupersetPostgresConfig,
 )
-
 
 logger = logging.getLogger(__name__)
 
@@ -130,4 +130,3 @@ class SupersetInputsProcessor(BaseChartValueProcessor[SupersetInputs]):
                 additional_values,
             ]
         )
-
