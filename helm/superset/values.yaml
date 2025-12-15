@@ -806,6 +806,9 @@ postgresql:
   ## Use the PostgreSQL chart dependency.
   ## Set to false if bringing your own PostgreSQL.
   enabled: true
+  global:
+    security:
+      allowInsecureImages: true
 
   ## Authentication parameters
   auth:
@@ -819,6 +822,7 @@ postgresql:
     database: superset
 
   image:
+    repository: bitnamilegacy/postgresql
     tag: "14.17.0-debian-12-r3"
 
   ## PostgreSQL Primary parameters
