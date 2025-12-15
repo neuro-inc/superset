@@ -850,12 +850,18 @@ postgresql:
 # More documentation can be found here: https://artifacthub.io/packages/helm/bitnami/redis
 # @default -- see `values.yaml`
 redis:
+  global:
+    security:
+      allowInsecureImages: true
   ##
   ## Use the redis chart dependency.
   ##
   ## If you are bringing your own redis, you can set the host in supersetNode.connections.redis_host
   ##
   ## Set to false if bringing your own redis.
+  image:
+    repository: bitnamilegacy/redis
+    tag: 7.0.10-debian-11-r4
   enabled: true
   ##
   ## Set architecture to standalone/replication
