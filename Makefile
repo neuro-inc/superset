@@ -162,5 +162,5 @@ push-hook-image:
 
 .PHONY: gen-types-schemas
 gen-types-schemas:
-	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetAppInputs .apolo/src/apolo_apps_superset/schemas/SupersetInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetAppOutputs .apolo/src/apolo_apps_superset/schemas/SupersetOutputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetInputs .apolo/src/apolo_apps_superset/schemas/SupersetInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_superset SupersetOutputs .apolo/src/apolo_apps_superset/schemas/SupersetOutputs.json

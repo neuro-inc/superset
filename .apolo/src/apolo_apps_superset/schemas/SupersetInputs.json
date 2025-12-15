@@ -1,48 +1,298 @@
 {
   "$defs": {
-    "ServiceAPI_WebApp_": {
+    "ApoloAuth": {
       "properties": {
-        "internal_url": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/WebApp"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Internal URL"
-        },
-        "external_url": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/WebApp"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "External URL"
+        "type": {
+          "const": "apolo_auth",
+          "default": "apolo_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
         }
       },
-      "title": "ServiceAPI[WebApp]",
+      "title": "ApoloAuth",
       "type": "object",
-      "x-description": "Service APIs URLs.",
+      "x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
       "x-is-advanced-field": false,
       "x-is-configurable": true,
       "x-meta-type": "inline",
-      "x-title": "Service APIs",
-      "x-type": "ServiceAPI[GrpcAPI]"
+      "x-title": "Apolo Platform Authentication",
+      "x-type": "ApoloAuth"
+    },
+    "ApoloSecret": {
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key"
+      ],
+      "title": "ApoloSecret",
+      "type": "object",
+      "x-description": "Apolo Secret Configuration.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Secret",
+      "x-type": "ApoloSecret"
+    },
+    "AuthIngressMiddleware": {
+      "properties": {
+        "name": {
+          "pattern": "^platform",
+          "title": "Name",
+          "type": "string",
+          "x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Middleware Name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "AuthIngressMiddleware",
+      "type": "object",
+      "x-description": "Configure authentication middleware for ingress traffic.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Authentication Ingress Middleware",
+      "x-type": "AuthIngressMiddleware"
+    },
+    "CrunchyPostgresUserCredentials": {
+      "properties": {
+        "user": {
+          "title": "User",
+          "type": "string",
+          "x-description": "Username for the Postgres user.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Postgres User"
+        },
+        "password": {
+          "$ref": "#/$defs/ApoloSecret",
+          "x-description": "Password for the Postgres user.",
+          "x-title": "Postgres Password"
+        },
+        "host": {
+          "title": "Host",
+          "type": "string",
+          "x-description": "Host of the Postgres instance.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Postgres Host"
+        },
+        "port": {
+          "exclusiveMinimum": 0,
+          "title": "Port",
+          "type": "integer",
+          "x-description": "Port of the Postgres instance.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Postgres Port"
+        },
+        "pgbouncer_host": {
+          "title": "Pgbouncer Host",
+          "type": "string",
+          "x-description": "Host of the PGBouncer instance.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "PGBouncer Host"
+        },
+        "pgbouncer_port": {
+          "exclusiveMinimum": 0,
+          "title": "Pgbouncer Port",
+          "type": "integer",
+          "x-description": "Port of the PGBouncer instance.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "PGBouncer Port"
+        },
+        "dbname": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dbname"
+        },
+        "pgbouncer_uri": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloSecret"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "postgres_uri": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloSecret"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "user_type": {
+          "const": "user",
+          "default": "user",
+          "title": "User Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user",
+        "password",
+        "host",
+        "port",
+        "pgbouncer_host",
+        "pgbouncer_port"
+      ],
+      "title": "CrunchyPostgresUserCredentials",
+      "type": "object",
+      "x-description": "Configuration for Crunchy Postgres user credentials.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Postgres User Credentials",
+      "x-type": "CrunchyPostgresUserCredentials"
+    },
+    "CustomAuth": {
+      "properties": {
+        "type": {
+          "const": "custom_auth",
+          "default": "custom_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        },
+        "middleware": {
+          "$ref": "#/$defs/AuthIngressMiddleware",
+          "x-description": "Custom authentication middleware configuration.",
+          "x-title": "Authentication Middleware"
+        }
+      },
+      "required": [
+        "middleware"
+      ],
+      "title": "CustomAuth",
+      "type": "object",
+      "x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Custom Authentication",
+      "x-type": "CustomAuth"
+    },
+    "IngressHttp": {
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloAuth"
+            },
+            {
+              "$ref": "#/$defs/NoAuth"
+            },
+            {
+              "$ref": "#/$defs/CustomAuth"
+            }
+          ],
+          "title": "Auth",
+          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Authentication"
+        }
+      },
+      "title": "IngressHttp",
+      "type": "object",
+      "x-description": "Enable access to your application over the internet using HTTPS.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "IngressHttp"
+    },
+    "NoAuth": {
+      "properties": {
+        "type": {
+          "const": "no_auth",
+          "default": "no_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "NoAuth",
+      "type": "object",
+      "x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "No Authentication",
+      "x-type": "NoAuth"
+    },
+    "Preset": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "x-description": "The name of the preset.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Resource Preset"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Preset",
+      "type": "object",
+      "x-description": "Select the resource preset used per service replica.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Resource Preset",
+      "x-type": "Preset"
+    },
+    "SupersetPostgresConfig": {
+      "properties": {
+        "preset": {
+          "$ref": "#/$defs/Preset"
+        }
+      },
+      "required": [
+        "preset"
+      ],
+      "title": "SupersetPostgresConfig",
+      "type": "object",
+      "x-description": "Set the configuration for the superset database.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Superset Postgres.",
+      "x-type": "SupersetPostgresConfig"
     },
     "SupersetUserConfig": {
       "properties": {
@@ -106,123 +356,85 @@
       "x-title": "Configuration for the admin user.",
       "x-type": "SupersetUserConfig"
     },
-    "WebApp": {
+    "WebConfig": {
       "properties": {
-        "host": {
-          "title": "Host",
-          "type": "string",
-          "x-description": "The hostname of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Hostname"
-        },
-        "port": {
-          "default": 80,
-          "exclusiveMinimum": 0,
-          "title": "Port",
-          "type": "integer",
-          "x-description": "The port of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Port"
-        },
-        "protocol": {
-          "default": "http",
-          "title": "Protocol",
-          "type": "string",
-          "x-description": "The protocol to use, e.g., http or https.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Protocol"
-        },
-        "timeout": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": 30.0,
-          "title": "Timeout",
-          "x-description": "Connection timeout in seconds.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Connection Timeout"
-        },
-        "base_path": {
-          "default": "/",
-          "title": "Base Path",
-          "type": "string"
-        },
-        "api_type": {
-          "const": "webapp",
-          "default": "webapp",
-          "title": "Api Type",
-          "type": "string"
+        "preset": {
+          "$ref": "#/$defs/Preset"
         }
       },
       "required": [
-        "host"
+        "preset"
       ],
-      "title": "WebApp",
+      "title": "WebConfig",
       "type": "object",
-      "x-description": "HTTP API Configuration.",
+      "x-description": "Set the configuration for Superset Web UI.",
       "x-is-advanced-field": false,
       "x-is-configurable": true,
       "x-meta-type": "inline",
-      "x-title": "HTTP API",
-      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
+      "x-title": "Web Configuration",
+      "x-type": "WebConfig"
+    },
+    "WorkerConfig": {
+      "properties": {
+        "preset": {
+          "$ref": "#/$defs/Preset"
+        }
+      },
+      "required": [
+        "preset"
+      ],
+      "title": "WorkerConfig",
+      "type": "object",
+      "x-description": "Set the configuration for Superset worker.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Worker Configuration",
+      "x-type": "WorkerConfig"
     }
   },
   "properties": {
-    "app_url": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/ServiceAPI_WebApp_"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null,
-      "description": "The main application URL for accessing the service. This is the primary endpoint users should use to access the application.",
-      "title": "Application URL"
+    "ingress_http": {
+      "$ref": "#/$defs/IngressHttp"
     },
-    "secret": {
+    "worker_config": {
+      "$ref": "#/$defs/WorkerConfig"
+    },
+    "web_config": {
+      "$ref": "#/$defs/WebConfig"
+    },
+    "redis_preset": {
+      "$ref": "#/$defs/Preset",
+      "x-description": "Set the Redis preset for Superset.",
+      "x-title": "Redis Preset"
+    },
+    "postgres_config": {
       "anyOf": [
         {
-          "type": "string"
+          "$ref": "#/$defs/CrunchyPostgresUserCredentials"
         },
         {
-          "type": "null"
+          "$ref": "#/$defs/SupersetPostgresConfig"
         }
       ],
-      "default": null,
-      "title": "Secret",
-      "x-description": "Secret token for Superset.",
+      "title": "Postgres Config",
+      "x-description": "Set your own postgres as a database for Superset app. If it was not provided, postgres instance will be created within the same app.",
       "x-is-advanced-field": false,
       "x-is-configurable": true,
       "x-meta-type": "inline",
-      "x-title": "Superset Secret"
+      "x-title": "Postgres Configuration"
     },
     "admin_user": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/SupersetUserConfig"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null
+      "$ref": "#/$defs/SupersetUserConfig"
     }
   },
-  "title": "SupersetOutputs",
+  "required": [
+    "ingress_http",
+    "worker_config",
+    "web_config",
+    "redis_preset",
+    "postgres_config"
+  ],
+  "title": "SupersetInputs",
   "type": "object"
 }
