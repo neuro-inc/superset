@@ -16,7 +16,7 @@
 #
 
 HOOK_IMAGE_NAME ?= mlops-app-superset
-HOOK_IMAGE_TAG := latest
+HOOK_IMAGE_TAG ?= latest
 
 
 # Python version installed; we need 3.10-3.11
