@@ -18,6 +18,9 @@
   short_description: A modern, enterprise-ready business intelligence web application.
   description: |
     Superset is a modern data exploration and data visualization platform. Superset can replace or augment proprietary business intelligence tools for many teams. Superset integrates well with a variety of data sources.
+    Resource sizing options:
+    - Lean (dev/test): 0.5 vCPU, 1 GiB RAM
+    - Balanced (prod): 2 vCPU, 3 GiB RAM
   pub_date: "2025-05-30T00:00:00+00:00"
   logo: https://storage.googleapis.com/development-421920-assets/app-logos/superset.svg
   tags: ["Apache", "Superset", "BI", "Visualization", "Business Intelligence", "Data"]
