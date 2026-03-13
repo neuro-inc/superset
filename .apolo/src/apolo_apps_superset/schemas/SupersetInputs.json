@@ -279,7 +279,9 @@
     "SupersetPostgresConfig": {
       "properties": {
         "preset": {
-          "$ref": "#/$defs/Preset"
+          "$ref": "#/$defs/Preset",
+          "x-description": "Specify preset configuration for Superset Postgres. Minimal resources: 0.5 CPU cores, 256 MiB memory.",
+          "x-title": "Superset Postgres Preset"
         }
       },
       "required": [
@@ -359,7 +361,9 @@
     "WebConfig": {
       "properties": {
         "preset": {
-          "$ref": "#/$defs/Preset"
+          "$ref": "#/$defs/Preset",
+          "x-description": "Specify preset configuration to be used by the Web. Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+          "x-title": "Web Preset"
         }
       },
       "required": [
@@ -377,7 +381,9 @@
     "WorkerConfig": {
       "properties": {
         "preset": {
-          "$ref": "#/$defs/Preset"
+          "$ref": "#/$defs/Preset",
+          "x-description": "Specify preset configuration to be used by the Worker. Minimal resources: 1 CPU cores, 2 GiB memory.",
+          "x-title": "Worker Preset"
         }
       },
       "required": [

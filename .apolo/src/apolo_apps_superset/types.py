@@ -18,7 +18,14 @@ class WebConfig(AbstractAppFieldType):
             description=("Set the configuration for Superset Web UI."),
         ).as_json_schema_extra(),
     )
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="Web Preset",
+            description="Specify preset configuration to be used by the Web. "
+            "Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+        ).as_json_schema_extra(),
+    )
 
 
 class WorkerConfig(AbstractAppFieldType):
@@ -29,7 +36,14 @@ class WorkerConfig(AbstractAppFieldType):
             description=("Set the configuration for Superset worker."),
         ).as_json_schema_extra(),
     )
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="Worker Preset",
+            description="Specify preset configuration to be used by the Worker. "
+            "Minimal resources: 1 CPU cores, 2 GiB memory.",
+        ).as_json_schema_extra(),
+    )
 
 
 class SupersetUserConfig(AbstractAppFieldType):
@@ -80,7 +94,14 @@ class SupersetPostgresConfig(AbstractAppFieldType):
             description="Set the configuration for the superset database.",
         ).as_json_schema_extra(),
     )
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="Superset Postgres Preset",
+            description="Specify preset configuration for Superset Postgres. "
+            "Minimal resources: 0.5 CPU cores, 256 MiB memory.",
+        ).as_json_schema_extra(),
+    )
 
 
 class SupersetInputs(AppInputs):
