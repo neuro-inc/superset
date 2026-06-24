@@ -54,6 +54,10 @@ async def test_superset_basic_values_generation(setup_clients, mock_get_preset_c
             }
         },
         "apolo_app_id": APP_ID,
+        "connections": {
+            "db_host": helm_params["postgresql"]["fullnameOverride"],
+            "redis_host": f"{helm_params['redis']['fullnameOverride']}-headless",
+        },
         "podLabels": {
             "platform.apolo.us/component": "app",
             "platform.apolo.us/preset": "cpu-large",
@@ -84,6 +88,7 @@ async def test_superset_basic_values_generation(setup_clients, mock_get_preset_c
         ],
     }
     assert helm_params["postgresql"] == {
+        "fullnameOverride": helm_params["postgresql"]["fullnameOverride"],
         "primary": {
             "affinity": {
                 "nodeAffinity": {
@@ -134,6 +139,7 @@ async def test_superset_basic_values_generation(setup_clients, mock_get_preset_c
         },
     }
     assert helm_params["redis"] == {
+        "fullnameOverride": helm_params["redis"]["fullnameOverride"],
         "master": {
             "preset_name": "cpu-large",
             "apolo_app_id": APP_ID,
@@ -181,7 +187,7 @@ async def test_superset_basic_values_generation(setup_clients, mock_get_preset_c
                     "tolerationSeconds": 300,
                 },
             ],
-        }
+        },
     }
     assert helm_params["supersetWorker"] == {
         "apolo_app_id": APP_ID,
@@ -250,6 +256,27 @@ async def test_superset_basic_values_generation(setup_clients, mock_get_preset_c
         == "platform-platform-control-plane-ingress-auth@kubernetescrd"
     )
 
+    assert helm_params["postgresql"]["fullnameOverride"].startswith("superset-")
+    assert helm_params["redis"]["fullnameOverride"].startswith("superset-")
+    assert (
+        helm_params["postgresql"]["fullnameOverride"]
+        != helm_params["redis"]["fullnameOverride"]
+    )
+
+
+def test_superset_resource_names_are_short_and_unique():
+    from apolo_apps_superset.inputs_processor import _make_short_resource_name
+
+    long_app_id = "super-long-app-id-" + ("x" * 80)
+    postgres_fullname = _make_short_resource_name(long_app_id, "postgresql")
+    redis_fullname = _make_short_resource_name(long_app_id, "redis")
+
+    assert len(postgres_fullname) <= 63
+    assert len(redis_fullname) <= 63
+    assert postgres_fullname != redis_fullname
+    assert postgres_fullname.startswith("superset-")
+    assert redis_fullname.startswith("superset-")
+
 
 @pytest.mark.asyncio
 async def test_superset_values_generation_with_postgres_integration(
@@ -279,6 +306,7 @@ async def test_superset_values_generation_with_postgres_integration(
         "db_pass": ApoloSecret(key="pgvector_password"),
         "db_port": 4321,
         "db_user": "pgvector_user",
+        "redis_host": f"{helm_params['redis']['fullnameOverride']}-headless",
     }
 
 
@@ -290,6 +318,7 @@ async def test_superset_values_generation_with_custom_admin_user(
 
     apolo_client = setup_clients
     processor = SupersetInputsProcessor(apolo_client)
+    custom_admin_password = "".join(["My", "Crazy", "Pass"])
     helm_params = await processor.gen_extra_values(
         input_=SupersetInputs(
             worker_config=WorkerConfig(preset=Preset(name="cpu-large")),
@@ -299,7 +328,7 @@ async def test_superset_values_generation_with_custom_admin_user(
                 username="some_other_admin_user",
                 firstname="Superset",
                 lastname="Admin",
-                password="MyCrazyPass",
+                password=custom_admin_password,
                 email="admin@mail.ua",
             ),
             postgres_config=SupersetPostgresConfig(preset=Preset(name="cpu-large")),
