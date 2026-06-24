@@ -278,7 +278,7 @@ supersetNode:
     - ". {{ .Values.configMountPath }}/superset_bootstrap.sh; /usr/bin/run-server.sh"
   connections:
     # -- Change in case of bringing your own redis and then also set redis.enabled:false
-    redis_host: "{{ .Release.Name }}-redis-headless"
+    redis_host: redis-headless
     redis_port: "6379"
     redis_user: ""
     # redis_password: superset
@@ -290,7 +290,7 @@ supersetNode:
       enabled: false
       ssl_cert_reqs: CERT_NONE
     # You need to change below configuration incase bringing own PostgresSQL instance and also set postgresql.enabled:false
-    db_host: "{{ .Release.Name }}-postgresql"
+    db_host: postgresql
     db_port: "5432"
     db_user: superset
     db_pass: superset
@@ -806,6 +806,7 @@ postgresql:
   ## Use the PostgreSQL chart dependency.
   ## Set to false if bringing your own PostgreSQL.
   enabled: true
+  fullnameOverride: postgresql
   global:
     security:
       allowInsecureImages: true
@@ -863,6 +864,7 @@ redis:
   ## If you are bringing your own redis, you can set the host in supersetNode.connections.redis_host
   ##
   ## Set to false if bringing your own redis.
+  fullnameOverride: redis
   image:
     repository: bitnamilegacy/redis
     tag: 7.0.10-debian-11-r4
