@@ -1,4 +1,3 @@
-import hashlib
 import logging
 import secrets
 import typing as t
@@ -45,8 +44,7 @@ def _make_short_resource_name(app_id: str, suffix: str) -> str:
     limits.
     """
 
-    digest = hashlib.sha256(app_id.encode("utf-8")).hexdigest()[:8]
-    return f"superset-{digest}-{suffix}"[:63].rstrip("-")
+    return f"superset-{app_id[:8]}-{suffix}"[:63].rstrip("-")
 
 
 class SupersetInputsProcessor(BaseChartValueProcessor[SupersetInputs]):
