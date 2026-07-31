@@ -2,7 +2,7 @@ from apolo_apps_superset.inputs_processor import (
     SupersetInputsProcessor,
 )
 from apolo_apps_superset.outputs_processor import (
-    SupersetOutputProcessor,
+    SupersetOutputsProcessor,
 )
 from apolo_apps_superset.types import (
     SupersetInputs,
@@ -11,7 +11,7 @@ from apolo_apps_superset.types import (
 
 __all__ = [
     "SupersetInputsProcessor",
-    "SupersetOutputProcessor",
+    "SupersetOutputsProcessor",
     "SupersetInputs",
     "SupersetOutputs",
 ]

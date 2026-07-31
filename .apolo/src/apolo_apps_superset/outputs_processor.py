@@ -52,7 +52,7 @@ async def get_superset_outputs(
     )
 
 
-class SupersetOutputProcessor(BaseAppOutputsProcessor[SupersetOutputs]):
+class SupersetOutputsProcessor(BaseAppOutputsProcessor[SupersetOutputs]):
     async def _generate_outputs(
         self,
         helm_values: dict[str, t.Any],
