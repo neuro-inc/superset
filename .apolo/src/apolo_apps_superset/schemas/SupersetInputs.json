@@ -99,8 +99,16 @@
           "x-title": "Postgres Port"
         },
         "pgbouncer_host": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
           "title": "Pgbouncer Host",
-          "type": "string",
           "x-description": "Host of the PGBouncer instance.",
           "x-is-advanced-field": false,
           "x-is-configurable": true,
@@ -108,9 +116,17 @@
           "x-title": "PGBouncer Host"
         },
         "pgbouncer_port": {
-          "exclusiveMinimum": 0,
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
           "title": "Pgbouncer Port",
-          "type": "integer",
           "x-description": "Port of the PGBouncer instance.",
           "x-is-advanced-field": false,
           "x-is-configurable": true,
@@ -162,9 +178,7 @@
         "user",
         "password",
         "host",
-        "port",
-        "pgbouncer_host",
-        "pgbouncer_port"
+        "port"
       ],
       "title": "CrunchyPostgresUserCredentials",
       "type": "object",

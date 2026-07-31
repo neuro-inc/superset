@@ -35,6 +35,18 @@ def _generate_superset_secret_hex(length: int = 16) -> str:
     return secret
 
 
+def _make_short_resource_name(app_id: str, suffix: str) -> str:
+    """
+    Build a stable short resource name for subcharts.
+
+    Helm dependency charts still derive many resource names from fullnameOverride,
+    so we keep the name dynamic per app instance but short enough for Kubernetes
+    limits.
+    """
+
+    return f"superset-{app_id[:8]}-{suffix}"[:63].rstrip("-")
+
+
 class SupersetInputsProcessor(BaseChartValueProcessor[SupersetInputs]):
     async def _get_init_params(self, input_: SupersetInputs) -> dict[str, t.Any]:
         return {
@@ -84,6 +96,8 @@ class SupersetInputsProcessor(BaseChartValueProcessor[SupersetInputs]):
         logger.debug("Generated extra Superset values: %s", node_values)
         ingress_vals = node_values.pop("ingress", {})
         additional_values: dict[str, t.Any] = {}
+        postgres_fullname = _make_short_resource_name(app_id, "postgresql")
+        redis_fullname = _make_short_resource_name(app_id, "redis")
 
         redis_values = await gen_extra_values(
             self.client,
@@ -91,7 +105,21 @@ class SupersetInputsProcessor(BaseChartValueProcessor[SupersetInputs]):
             app_id=app_id,
             app_type=AppType.Superset,
         )
-        additional_values.update({"redis": {"master": redis_values}})
+        node_values.setdefault("connections", {})
+        node_values["connections"].update(
+            {
+                "redis_host": f"{redis_fullname}-headless",
+                "db_host": postgres_fullname,
+            }
+        )
+        additional_values.update(
+            {
+                "redis": {
+                    "fullnameOverride": redis_fullname,
+                    "master": redis_values,
+                }
+            }
+        )
 
         if isinstance(input_.postgres_config, SupersetPostgresConfig):
             postgres_values = await gen_extra_values(
@@ -100,17 +128,22 @@ class SupersetInputsProcessor(BaseChartValueProcessor[SupersetInputs]):
                 app_id=app_id,
                 app_type=AppType.Superset,
             )
-            additional_values.update({"postgresql": {"primary": postgres_values}})
-        else:
-            node_values.update(
+            additional_values.update(
                 {
-                    "connections": {
-                        "db_host": input_.postgres_config.pgbouncer_host,
-                        "db_port": input_.postgres_config.pgbouncer_port,
-                        "db_user": input_.postgres_config.user,
-                        "db_pass": input_.postgres_config.password,
-                        "db_name": input_.postgres_config.dbname,
+                    "postgresql": {
+                        "fullnameOverride": postgres_fullname,
+                        "primary": postgres_values,
                     }
+                }
+            )
+        else:
+            node_values["connections"].update(
+                {
+                    "db_host": input_.postgres_config.pgbouncer_host,
+                    "db_port": input_.postgres_config.pgbouncer_port,
+                    "db_user": input_.postgres_config.user,
+                    "db_pass": input_.postgres_config.password,
+                    "db_name": input_.postgres_config.dbname,
                 }
             )
             additional_values.update({"postgresql": {"enabled": False}})

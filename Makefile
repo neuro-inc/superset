@@ -127,16 +127,12 @@ hook-install:
 	poetry run pre-commit install;
 
 .PHONY: hook-format
-format:
-ifdef CI
-	poetry run pre-commit run --all-files --show-diff-on-failure
-else
-	# automatically fix the formatting issues and rerun again
-	poetry run pre-commit run --all-files || poetry run pre-commit run --all-files
-endif
+hook-format:
+	cd hooks && \
+	poetry run pre-commit run generate-types-schemas --all-files --show-diff-on-failure -c .pre-commit-config.yaml
 
 .PHONY: hook-lint
-lint: hook-format
+hook-lint: hook-format
 	cd hooks && \
 	poetry run mypy ../.apolo
 
