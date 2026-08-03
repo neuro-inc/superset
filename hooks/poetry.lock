@@ -296,14 +296,14 @@ trio = ["trio (>=0.31.0) ; python_version < \"3.10\"", "trio (>=0.32.0) ; python
 
 [[package]]
 name = "apolo-app-types"
-version = "26.8.0"
+version = "26.8.1"
 description = "Apolo Platform App Types."
 optional = false
 python-versions = "<4.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "apolo_app_types-26.8.0-py3-none-any.whl", hash = "sha256:765e7e80b43b62a5c9c7f051bb643c85470898a770b27ae8ba813cd5771f6a2d"},
-    {file = "apolo_app_types-26.8.0.tar.gz", hash = "sha256:99efd79d0442ac9dc7d787116e957f1350d267ac136c0bdf4af50ffc7bcbd7d2"},
+    {file = "apolo_app_types-26.8.1-py3-none-any.whl", hash = "sha256:cc9099c2d80e932805b304db6e1834b1f255f26e8b2b9479673db081221b6267"},
+    {file = "apolo_app_types-26.8.1.tar.gz", hash = "sha256:f6f293925f95c3920b090b078c8b88184fe8ba587d12777008fcd8e72dd66bfd"},
 ]
 
 [package.dependencies]
@@ -311,7 +311,7 @@ apolo-sdk = ">=26.3.0,<27.0.0"
 click = ">=8.3.2,<9.0.0"
 httpx = ">=0.28.0,<0.29.0"
 jsonref = ">=1.1.0,<2.0.0"
-kubernetes = ">=35,<37"
+kubernetes = ">=35,<36"
 pydantic = ">=2.12.5,<3.0.0"
 pyyaml = ">=6.0.3,<7.0.0"
 tenacity = ">=9.1.2,<10.0.0"
@@ -1514,18 +1514,17 @@ files = [
 
 [[package]]
 name = "kubernetes"
-version = "36.0.0"
+version = "35.0.0"
 description = "Kubernetes python client"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "kubernetes-36.0.0-py2.py3-none-any.whl", hash = "sha256:a766433357ec9f90db7565cccf52e28e7fca40b0ef366c80a6022adbc0ac0425"},
-    {file = "kubernetes-36.0.0.tar.gz", hash = "sha256:027b606bb8032e6c6464a53236bdd9bd9a94c237e1063bc45a303c25b304ced9"},
+    {file = "kubernetes-35.0.0-py2.py3-none-any.whl", hash = "sha256:39e2b33b46e5834ef6c3985ebfe2047ab39135d41de51ce7641a7ca5b372a13d"},
+    {file = "kubernetes-35.0.0.tar.gz", hash = "sha256:3d00d344944239821458b9efd484d6df9f011da367ecb155dadf9513f05f09ee"},
 ]
 
 [package.dependencies]
-aiohttp = ">=3.9.0,<4.0.0"
 certifi = ">=14.5.14"
 durationpy = ">=0.7"
 python-dateutil = ">=2.5.3"
@@ -1537,6 +1536,7 @@ urllib3 = ">=1.24.2,<2.6.0 || >2.6.0"
 websocket-client = ">=0.32.0,<0.40.0 || >0.40.0,<0.41.dev0 || >=0.43.dev0"
 
 [package.extras]
+adal = ["adal (>=1.0.2)"]
 google-auth = ["google-auth (>=1.0.1)"]
 
 [[package]]
@@ -3048,4 +3048,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11.0,<4.0"
-content-hash = "f2bf018c75272bc11adbc21befd65619f0a0bafa115c462f9bd34e277518ca67"
+content-hash = "2359e731fcefad180a63cac28947c8d8b77cbac5a5ba39e1f6827bb113c1d909"
